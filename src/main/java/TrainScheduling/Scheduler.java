@@ -1,12 +1,20 @@
+package TrainScheduling;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * The Scheduler create a new schedule for trains.
+ */
 public class Scheduler {
 
     private List<Train> trains;
 
+    /**
+     * Create a new Scheduler for the received trains
+     * @param trains trains to be scheduled
+     */
     public Scheduler(List<Train> trains) {
         this.trains = trains;
     }
@@ -25,7 +33,7 @@ public class Scheduler {
         Train scheduledTrain = trainListIterator.next();
         scheduledTrains.add(scheduledTrain);
 
-        for(Train train = trainListIterator.next();trainListIterator.hasNext(); train = trainListIterator.next()){
+        for(Train train = trainListIterator.next(); trainListIterator.hasNext(); train = trainListIterator.next()){
             if(!train.overlapWithTrain(scheduledTrain)){
                 scheduledTrain = train;
                 scheduledTrains.add(scheduledTrain);

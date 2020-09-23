@@ -1,8 +1,10 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+package TrainScheduling;
 
+import java.util.List;
+
+/**
+ * This sorting class is responsible for sorting a list of trains based on their end times
+ */
 public class Sorting {
 
     private List<Train> trains;
@@ -21,8 +23,8 @@ public class Sorting {
      */
     public List<Train> sort() {
         //This is the fix for task 2
-        //Change i from 1 to 0
-        for (int i = trains.size() - 1; i > 0; i--) {
+        for (int i = trains.size() - 1; i > 0; i--        //Change i from 1 to 0
+        ) {
             for (int j = 0; j < i; j++) {
                 if (trains.get(j).getEndTime() > trains.get(j + 1).getEndTime())
                     Utils.reorder(j, j + 1, trains);
