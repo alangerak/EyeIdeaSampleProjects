@@ -54,13 +54,11 @@ public class ProductDBConnector {
     }
 
 
-    public Product registerProduct(String name, ProductCategory category, float price){
+    public void registerProduct(String name, ProductCategory category, float price){
         Product product = new Product(name);
         nameProductDatabase.put(name, product);
         productProductCategoryMap.put(product, category);
         productPriceMap.put(product, price);
-
-        return product;
     }
 
     public float getPriceProduct(Product product){

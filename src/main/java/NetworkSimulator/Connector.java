@@ -45,8 +45,8 @@ public class Connector {
      * @param firewall
      */
     public void createFirewallConnection(Switch switch1, int port1, Switch switch2, int port2, Firewall firewall){
-        createTwoWayConnection(switch1, port1, firewall, 0);
-        createTwoWayConnection(switch2, port2, firewall, 1);
+        createOneWayConnection(switch1, port1, firewall, 0);
+        createOneWayConnection(switch2, port2, firewall, 1);
     }
 
 }

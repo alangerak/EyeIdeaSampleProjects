@@ -12,15 +12,26 @@ import java.util.List;
  */
 public class ShoppingCartApp {
 
+    private static void createProductDatabase(){
+        ProductDBConnector productDBConnector = ProductDBConnector.getInstance();
+
+        productDBConnector.registerProduct("Pizza", ProductCategory.FOOD, 5.99f);
+        productDBConnector.registerProduct("Beer", ProductCategory.ALCOHOL_DRINKS, 9.99f);
+        productDBConnector.registerProduct("AllPurposeCleaner", ProductCategory.CLEANING_SUPPLIES, 2.40f);
+        productDBConnector.registerProduct("DiscoLights", ProductCategory.ELECTRONICS, 2.40f);
+    }
+
+
     public static void main(String[] args) {
 
-        ProductDBConnector productDBConnector = ProductDBConnector.getInstance();
+        createProductDatabase();
         List<Product> products = new ArrayList<>();
 
-        products.add(productDBConnector.registerProduct("Pizza", ProductCategory.FOOD, 5.99f));
-        products.add(productDBConnector.registerProduct("Beer", ProductCategory.ALCOHOL_DRINKS, 9.99f));
-        products.add(productDBConnector.registerProduct("AllPurposeCleaner", ProductCategory.CLEANING_SUPPLIES, 2.40f));
-        products.add(productDBConnector.registerProduct("DiscoLights", ProductCategory.ELECTRONICS, 2.40f));
+        products.add(new Product("Pizza"));
+        products.add(new Product("Beer"));
+        products.add(new Product("AllPurposeCleaner"));
+        products.add(new Product("DiscoLights"));
+        products.add(new Product("Null"));
 
         ShoppingCart shoppingCart = new ShoppingCart();
         CheckoutCalculator checkoutCalculator = new CheckoutCalculator(shoppingCart);
@@ -38,10 +49,14 @@ public class ShoppingCartApp {
         validator.addAmount(checkoutCalculator.applyCouponBeforeTax(new Coupon(0.2f)));
         validator.addAmount(checkoutCalculator.applyTax(CountryCode.NL));
 
-        if (CheckoutCalculator.truncate(validator.getTotalAmount()).compareTo(new BigDecimal("19.98")) == 0) {
+        BigDecimal totalAmount = CheckoutCalculator.truncate(validator.getTotalAmount());
+
+        if (totalAmount.compareTo(new BigDecimal("19.98")) == 0) {
             validator.success();
-        } else {
-            System.out.println("Something went wrong with calculating the result");
+        } else if(totalAmount.compareTo(new BigDecimal("19.98")) < 0){
+            System.out.println("[Error], the calculated amount is smaller than was expected");
+        } else if(totalAmount.compareTo(new BigDecimal("19.98")) > 0){
+            System.out.println("[Error], the calculated amount is bigger than was expected");
         }
 
     }

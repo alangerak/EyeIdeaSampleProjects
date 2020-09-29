@@ -6,11 +6,10 @@ import java.util.Map;
 /**
  * A Switch is a device that connects other devices together to create complex networks.
  * It has a finite amount of ports that can be used to connect to other devices.
- *
+ * <p>
  * It reads the destination of a datapacket and sends over its appropriate ports.
- *
  */
-public class Switch implements Device{
+public class Switch implements Device {
 
     private Map<Integer, Integer> addressPortTable;
     private Map<Integer, PhysicalLink> portLinksTable;
@@ -20,16 +19,16 @@ public class Switch implements Device{
         addressPortTable = new HashMap<>();
         portLinksTable = new HashMap<>();
 
-        for(int i=0;i<numOfPorts;i++){
+        for (int i = 0; i < numOfPorts; i++) {
             portLinksTable.put(i, new PhysicalLink());
         }
     }
 
     @Override
     public void connect(PhysicalLink link) {
-        if(portLinksTable.containsKey(link.getPortSource())){
+        if (portLinksTable.containsKey(link.getPortSource())) {
             portLinksTable.put(link.getPortSource(), link);
-        }else{
+        } else {
             System.out.println("Port does not exist!");
         }
     }
@@ -38,7 +37,7 @@ public class Switch implements Device{
     public void send(DataPacket packet, int outPort) {
         portLinksTable.get(outPort).send(packet);
 
-        if(packetListener != null){
+        if (packetListener != null) {
             packetListener.sendPacket(this, packet, outPort);
         }
     }
@@ -46,25 +45,23 @@ public class Switch implements Device{
     @Override
     public void receive(DataPacket packet, int inPort) {
 
-        if(packetListener != null){
+        if (packetListener != null) {
             packetListener.receivedPacket(this, packet, inPort);
         }
 
         int source = packet.frame.header.getSourceAddress();
 
-        if(!addressPortTable.containsKey(source)){
+        if (!addressPortTable.containsKey(source)) {
             addressPortTable.put(source, inPort);
         }
 
         int destination = packet.frame.header.getDestinationAddress();
 
-        if(addressPortTable.containsKey(destination)){
+        if (addressPortTable.containsKey(destination)) {
             send(packet, addressPortTable.get(destination));
-        }else{
-            for(Integer outPort : portLinksTable.keySet()){
-                if(outPort != inPort){
-                    send(packet, outPort);
-                }
+        } else {
+            for (Integer outPort : portLinksTable.keySet()) {
+                send(packet, outPort);
             }
         }
     }

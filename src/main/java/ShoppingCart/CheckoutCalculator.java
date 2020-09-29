@@ -17,9 +17,7 @@ public class CheckoutCalculator {
         float total = 0;
         for(Product product: shoppingCart.getProducts()){
             float price = productDBConnector.getPriceProduct(product);
-            if(price != -1){
-                total += price - price * coupon.getDiscount();
-            }
+            total += price - price * coupon.getDiscount();
         }
         return total;
     }
@@ -29,7 +27,7 @@ public class CheckoutCalculator {
         for(Product product: shoppingCart.getProducts()){
             float price = productDBConnector.getPriceProduct(product);
             float taxRate = productDBConnector.getTaxRate(product, countryCode);
-            if(price != -1 && taxRate != -1){
+            if(taxRate != -1){
                 total += price + price * taxRate;
             }
         }

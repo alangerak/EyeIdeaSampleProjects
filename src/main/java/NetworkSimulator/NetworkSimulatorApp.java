@@ -92,36 +92,49 @@ public class NetworkSimulatorApp {
 
         connector.createFirewallConnection(switch1, 2, switch2, 1, firewall);
 
-
         /*
             Run Tests
          */
+
+        boolean testFailed = false;
+
         if (!testPackageSend(device5, device6, 80, probeTester)) {
+            testFailed = true;
             System.out.println("Could not send package from device5 to device6 over port 80");
         }
 
         if (!testPackageSend(device4, device5, 7, probeTester)) {
+            testFailed = true;
             System.out.println("Could not send package from device4 to device5 over port 7");
         }
 
         if (!testPackageSend(device4, device5, 8, probeTester)) {
+            testFailed = true;
             System.out.println("Package blocked! From device4 to device5 over port 8");
         }
 
         if (!testPackageSend(device4, device6, 99, probeTester)) {
+            testFailed = true;
             System.out.println("Could not send package from device4 to device6 over port 99");
         }
 
         if (!testPackageSend(device6, device5, 1, probeTester)) {
+            testFailed = true;
             System.out.println("Could not send package from device6 to device5 over port 1");
         }
 
         if (!testPackageSend(device5, device6, 99, Collections.singletonList(firewall), probeTester)) {
+            testFailed = true;
             System.out.println("Could not send package from device5 to device6 over port 99");
         }
 
         if (testPackageSend(device5, device6, 0, probeTester)) {
+            testFailed = true;
             System.out.println("Package not Blocked!, could send package from device5 to device6 over port 0");
+        }
+
+        if(!testFailed){
+            System.out.println("Simulator is working as expected!");
         }
     }
 
