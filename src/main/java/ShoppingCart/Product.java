@@ -2,7 +2,7 @@ package ShoppingCart;
 
 public class Product {
 
-    private String name;
+    private final String name;
 
     public Product(String name) {
         this.name = name;
@@ -17,5 +17,10 @@ public class Product {
         return "Product{" +
                 "name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }
